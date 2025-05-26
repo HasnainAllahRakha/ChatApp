@@ -13,7 +13,7 @@ const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: allowedOrigins,
+ origin: "*",   
     credentials: true,
   },
 });
@@ -22,7 +22,7 @@ const io = new Server(server, {
 
 app.use(
   cors({
-    origin: allowedOrigins,
+   origin: "*",   
     credentials: true,
   })
 );
