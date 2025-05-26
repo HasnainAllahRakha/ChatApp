@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion"
 import { UserPlus, ArrowLeft, Search, X, MessageCircle, AlertCircle, Users, Settings } from "lucide-react"
 import axios from "axios"
 import { Chat_Fetch } from "../url"
-import ProfileModal from "../components/UI/Profile-modal"
-import GroupChatModal from "../components/UI/Group-chat-modal"
-import GroupSettingsModal from "../components/UI/Group-settings-modal"
+import ProfileModal from "../Components/UI/Profile-modal"
+import GroupChatModal from "../Components/UI/Group-chat-modal"
+import GroupSettingsModal from "../Components/UI/Group-settings-modal"
 import Messages from "../Components/Messages/Message";
 import { useToast } from "../Components/Toast/toast"
 
