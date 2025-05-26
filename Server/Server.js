@@ -36,6 +36,11 @@ app.use((req, res, next) => {
 
 app.use(routes);
 
+app.get("/test", (req, res) => {
+  res.send("hello you are connected");
+});
+
+
 // When a new client connects to the server via Socket.IO
 io.on("connection", (socket) => {
   console.log("🔌 Connected to socket.io");
