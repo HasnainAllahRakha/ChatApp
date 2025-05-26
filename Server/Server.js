@@ -9,18 +9,20 @@ const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app); // Create HTTP server from Express
+const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5173", // Your frontend URL
+    origin: allowedOrigins,
     credentials: true,
   },
 });
 
 // Middleware
+
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
