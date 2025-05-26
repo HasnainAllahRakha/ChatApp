@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { X, Search, UserPlus, AlertCircle, Edit2, UserMinus, User } from "lucide-react"
 import axios from "axios"
 import { useAuth } from "../../Context/AuthContext"
-import { useChat } from "../../context/ChatContext"
+import { useChat } from "../../Context/ChatContext"
 import { User_Search, Chat_Group_Rename, Chat_Group_add, Chat_Group_Remove } from "../../url"
 import { useToast } from "../Toast/toast"
 

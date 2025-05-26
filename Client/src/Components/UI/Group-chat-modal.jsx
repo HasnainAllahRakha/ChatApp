@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { X, Search, Check, AlertCircle } from "lucide-react"
 import axios from "axios"
 import { useAuth } from "../../Context/AuthContext"
-import { useChat } from "../../context/ChatContext"
+import { useChat } from "../../Context/ChatContext"
 import { User_Search,Chat_Group_Create } from "../../url"
 
 const GroupChatModal = ({ isOpen, onClose }) => {
