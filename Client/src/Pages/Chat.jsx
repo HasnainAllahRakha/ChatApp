@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "../Context/AuthContext"
-import { useChat } from "../context/ChatContext"
+import { useChat } from "../Context/ChatContext"
 import { motion, AnimatePresence } from "framer-motion"
 import { UserPlus, ArrowLeft, Search, X, MessageCircle, AlertCircle, Users, Settings } from "lucide-react"
 import axios from "axios"
