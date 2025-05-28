@@ -4,28 +4,35 @@ const mongoose = require("mongoose");
 const routes = require("./Routes/index.routes");
 const cors = require("cors");
 const colors = require("colors");
-const http = require("http"); // Required for socket server
+const http = require("http");
 const { Server } = require("socket.io");
 
 const app = express();
-const server = http.createServer(app); // Create HTTP server from Express
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
-const io = new Server(server, {
-  pingTimeout: 60000,
-  cors: {
- origin: "*",   
-    credentials: true,
-  },
-});
+const server = http.createServer(app);
 
-// Middleware
+// ✅ List of allowed frontend origins
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://your-frontend-domain.com", // Replace with actual deployed frontend
+];
 
+// ✅ Middleware
 app.use(
   cors({
-   origin: "*",   
-    credentials: true,
+    origin: function (origin, callback) {
+      // Allow requests with no origin like mobile apps or curl
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -36,12 +43,21 @@ app.use((req, res, next) => {
 
 app.use(routes);
 
+// ✅ Test route
 app.get("/test", (req, res) => {
   res.send("hello you are connected");
 });
 
+// ✅ Socket.io setup with proper CORS
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  },
+});
 
-// When a new client connects to the server via Socket.IO
 io.on("connection", (socket) => {
   console.log("🔌 Connected to socket.io");
 
@@ -53,31 +69,32 @@ io.on("connection", (socket) => {
   socket.on("join-chat", (room) => {
     socket.join(room);
   });
+
   socket.on("new-message", (newMessageReceived) => {
     let chat = newMessageReceived.chat;
-
     if (!chat.users) return console.log("chat.users not defined");
 
     chat.users.forEach((user) => {
       if (user._id == newMessageReceived.sender._id) return;
 
-      socket.in(user._id).emit("message recieved", newMessageReceived); // Make sure the user has joined the room named by their _id
+      socket.in(user._id).emit("message recieved", newMessageReceived);
     });
   });
 
-socket.on("typing", ({ room, user }) => {
-  socket.in(room).emit("typing", user);
-});
+  socket.on("typing", ({ room, user }) => {
+    socket.in(room).emit("typing", user);
+  });
 
-socket.on("stop-typing", ({ room }) => {
-  socket.in(room).emit("stop-typing");
-});
+  socket.on("stop-typing", ({ room }) => {
+    socket.in(room).emit("stop-typing");
+  });
 
   socket.on("disconnect", () => {
     console.log("❌ Disconnected from socket.io");
   });
 });
 
+// ✅ Database connection and server start
 const port = process.env.PORT || 5000;
 
 mongoose
