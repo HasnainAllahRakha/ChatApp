@@ -14,7 +14,8 @@ const server = http.createServer(app);
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "http://your-frontend-domain.com", // Replace with actual deployed frontend
+  "http://13.53.182.243:3000", // ✅ Add this!
+  "http://your-frontend-domain.com", // Optional
 ];
 
 // ✅ Middleware
